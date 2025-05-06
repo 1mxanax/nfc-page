@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>Anteprima NFC Dinamica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin:0; padding:0; height:100%; overflow:hidden; }
+    body { background-color:#a100ff; font-family:'Montserrat',sans-serif; display:flex; justify-content:center; align-items:center; overflow:visible; }
+    .container {
+      width:90%; max-width:350px;
+      margin:12vh auto 8vh;
+      background:#000; border:2px solid #fff; border-radius:40px; padding:12px 16px;
+      text-align:center; color:#fff;
+      box-shadow:0 8px 16px rgba(0,0,0,0.6),0 16px 32px rgba(0,0,0,0.4);
+      transform:perspective(500px) rotateX(5deg);
+      overflow:hidden;
+    }
+    .logo-section img, .moto-3d img { width:60%; max-width:160px; margin-bottom:10px; }
+    .owner-name { font-family:'Bebas Neue',cursive; font-size:1.5rem; margin-bottom:12px; white-space:nowrap; }
+    .social-links { display:flex; justify-content:space-between; margin:10px 0; }
+    .social-links a { font-family:'Bebas Neue',cursive; font-size:0.9rem; color:#fff; text-decoration:none; }
+    .limited-edition { position:relative; width:100%; margin:16px 0; overflow:visible; }
+    .limited-edition span { display:inline-block; width:100%; font-family:'Bebas Neue',cursive; font-size:2.3rem; color:#fff; margin:0; }
+    .star { position:absolute; font-size:1.2rem; opacity:0; animation:twinkle infinite alternate; }
+    @keyframes twinkle { 0%{opacity:0;transform:scale(0.5);}50%{opacity:1;transform:scale(1);}100%{opacity:0;} }
+    .one-of-one { font-family:'Bebas Neue',cursive; font-size:1rem; margin:-8px 0 10px; }
+    .website-link a { font-family:'Bebas Neue',cursive; font-size:0.8rem; color:#fff; text-decoration:underline;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-section"><img id="logo" src="" alt="Logo"></div>
+    <h1 id="owner" class="owner-name">Nome del Proprietario</h1>
+    <div class="moto-3d"><img id="moto" src="" alt="Modello 3D Moto"></div>
+    <div class="social-links">
+      <a id="insta1" href="#" target="_blank" rel="noreferrer noopener">Instagram 1</a>
+      <a id="insta2" href="#" target="_blank" rel="noreferrer noopener">Instagram 2</a>
+    </div>
+    <div class="limited-edition"><span id="limited">LIMITED EDITION</span></div>
+    <p id="one" class="one-of-one">1 OF 1</p>
+    <p class="website-link"><a id="site" href="#" target="_blank" rel="noreferrer noopener">https://www.xnxdesign.com</a></p>
+  </div>
+  <script>
+    // Legge parametri URL
+    const params = new URLSearchParams(window.location.search);
+    const owner = params.get('owner') || document.getElementById('owner').textContent;
+    const insta1 = params.get('insta1') || '#';
+    const insta2 = params.get('insta2') || '#';
+    const limited = params.get('limited') || document.getElementById('limited').textContent;
+    const one = params.get('one') || document.getElementById('one').textContent;
+    const site = params.get('site') || document.getElementById('site').textContent;
+    const logo = params.get('logo');
+    const moto = params.get('moto');
+    const bgColor = params.get('bgColor');
+    const bgImage = params.get('bgImage');
+
+    // Applica valori dinamici
+    document.getElementById('owner').textContent = owner;
+    const a1 = document.getElementById('insta1'); a1.href = insta1; a1.textContent = 'Instagram ' + owner;
+    const a2 = document.getElementById('insta2'); a2.href = insta2; a2.textContent = 'Instagram Mio';
+    document.getElementById('limited').textContent = limited;
+    document.getElementById('one').textContent = one;
+    const siteA = document.getElementById('site'); siteA.href = site; siteA.textContent = site;
+    if(logo) document.getElementById('logo').src = logo;
+    if(moto) document.getElementById('moto').src = moto;
+    if(bgColor) document.body.style.backgroundColor = bgColor;
+    if(bgImage) document.body.style.background = `url('${bgImage}') center/cover no-repeat`;
+
+    // Sparkle animation
+    window.addEventListener('DOMContentLoaded', ()=>{
+      const span = document.getElementById('limited');
+      const rect = span.getBoundingClientRect();
+      const parentRect = span.parentElement.getBoundingClientRect();
+      for(let i=0;i<10;i++){
+        const star = document.createElement('div'); star.className='star'; star.textContent='✨';
+        const x = span.offsetLeft + Math.random()*span.offsetWidth;
+        const y = span.offsetTop + Math.random()*span.offsetHeight;
+        star.style.left = x+'px'; star.style.top = y+'px';
+        star.style.animationDuration = (2+Math.random()*4)+'s'; star.style.animationDelay = (Math.random()*3)+'s';
+        span.parentElement.appendChild(star);
+      }
+    });
+  </script>
+</body>
+</html>
